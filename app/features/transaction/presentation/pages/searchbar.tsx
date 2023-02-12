@@ -1,23 +1,15 @@
-import React, {PropsWithChildren} from 'react';
-import {
-  Image,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableWithoutFeedback,
-  View,
-} from 'react-native';
+import React from 'react';
+import {Image, StyleSheet, TextInput, View} from 'react-native';
+import {Sort} from './sort';
 import {Colors} from '../../../../common/stylesheet/colors';
 import {Fonts} from '../../../../common/stylesheet/fonts';
 
-type Props = PropsWithChildren<{
-  onSubmit: () => string;
-}>;
+interface Props {
+  onSearch: (keyword: string) => void;
+  onSort: (field: string, type: string) => void;
+}
 
-export function Searchbar({
-  onSubmit = (keyword: string) => keyword,
-}: Props): JSX.Element {
-  // export const Searchbar = ({code}: {code: string}) => {
+export function Searchbar({onSearch, onSort}: Props): JSX.Element {
   return (
     <View style={styles.searchbar}>
       <Image
@@ -27,28 +19,13 @@ export function Searchbar({
       />
       <TextInput
         returnKeyLabel="search"
-        onChangeText={q => onSubmit(q)}
+        onChangeText={q => onSearch(q)}
         style={styles.content}
         placeholder="Cari nama, bank, atau nominal"
         placeholderTextColor={Colors.grey}
         autoFocus={false}
-        // value={this.state.q ? this.state.q : ''}
-        // onSubmitEditing={() =>
-        //   this.props.onSubmitEditing
-        //     ? this.props.onSubmitEditing(this.state.q)
-        //     : {}
-        // }
       />
-      <TouchableWithoutFeedback onPress={() => {}}>
-        <View style={styles.sortButton}>
-          <Text style={styles.buttonText}>URUTKAN</Text>
-          <Image
-            source={require('../../../../../assets/icons/chevron-down.png')}
-            style={styles.iconSort}
-            resizeMode="contain"
-          />
-        </View>
-      </TouchableWithoutFeedback>
+      <Sort onSort={onSort} />
     </View>
   );
 }
@@ -80,18 +57,5 @@ const styles = StyleSheet.create({
   icon: {
     height: 20,
     tintColor: Colors.grey,
-  },
-  sortButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  iconSort: {
-    height: 20,
-    tintColor: Colors.primary,
-  },
-  buttonText: {
-    fontFamily: Fonts.bold,
-    fontSize: 14,
-    color: Colors.primary,
   },
 });

@@ -51,7 +51,7 @@ function TransactionPage(): JSX.Element {
   ];
   return (
     <SafeAreaView style={styles.container}>
-      <Searchbar onSubmit={q => console.log(q)} />
+      <Searchbar onSearch={q => console.log(q)} onSort={() => {}} />
       <FlatList
         data={listData}
         keyExtractor={(item, index) => String(index)}
