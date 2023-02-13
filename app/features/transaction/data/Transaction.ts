@@ -3,7 +3,6 @@ export class Transaction {
   amount: number;
   uniqueCode: number;
   status: string;
-  statusDesc: string;
   senderBank: string;
   accountNumber: string;
   beneficiaryName: string;
@@ -18,7 +17,6 @@ export class Transaction {
     amount: number,
     uniqueCode: number,
     status: string,
-    statusDesc: string,
     senderBank: string,
     accountNumber: string,
     beneficiaryName: string,
@@ -32,7 +30,6 @@ export class Transaction {
     this.amount = amount;
     this.uniqueCode = uniqueCode;
     this.status = status;
-    this.statusDesc = status;
     this.senderBank = senderBank;
     this.accountNumber = accountNumber;
     this.beneficiaryName = beneficiaryName;
