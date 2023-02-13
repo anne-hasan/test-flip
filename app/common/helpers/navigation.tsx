@@ -1,5 +1,6 @@
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {Transaction} from '../../features/transaction/data/Transaction';
 import Navbar from '../components/navbar';
 export {NavigationContainer};
 
@@ -13,5 +14,11 @@ export const defaultHeader = (param: any) => {
     />
   );
 };
+
+export type StackParams = {
+  Transaction: undefined;
+  DetailTransaction: {data: Transaction};
+};
+
 // React Navigation API functions
-export const Stack = createNativeStackNavigator();
+export const Stack = createNativeStackNavigator<StackParams>();

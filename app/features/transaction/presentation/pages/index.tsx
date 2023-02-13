@@ -10,16 +10,16 @@ import {Transaction} from '../../data/Transaction';
 import {Item, ListSeparator} from './list_item';
 import {Searchbar} from '../../../../common/components/searchbar';
 import {Sort} from '../../../../common/components/sort';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {StackParams} from '../../../../common/helpers/navigation';
 
 function getListData() {}
 function sortListData(field: string, type: string) {}
 function filterListData(keyword: string) {}
 
-const renderItem: ListRenderItem<Transaction> = ({item}) => (
-  <Item data={item} />
-);
+type Props = NativeStackScreenProps<StackParams, 'Transaction'>;
 
-function TransactionPage({navigation}): JSX.Element {
+function TransactionPage({route, navigation}: Props): JSX.Element {
   const listData = [
     {
       id: 'FT57863',
@@ -80,6 +80,18 @@ function TransactionPage({navigation}): JSX.Element {
       type: 'ASC',
     },
   ];
+
+  const renderItem: ListRenderItem<Transaction> = ({item}) => (
+    <Item
+      data={item}
+      onPress={() =>
+        navigation.navigate('DetailTransaction', {
+          data: item,
+        })
+      }
+    />
+  );
+
   return (
     <SafeAreaView style={styles.container}>
       <Searchbar

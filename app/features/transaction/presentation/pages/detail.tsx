@@ -1,30 +1,30 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Image, SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import {Fonts} from '../../../../common/stylesheet/fonts';
 import {Colors} from '../../../../common/stylesheet/colors';
 import {formatCurrency, formatDate} from '../../../../common/helpers/general';
+import {StackParams} from '../../../../common/helpers/navigation';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {Transaction} from '../../data/Transaction';
 
-function DetailTransactionPage(): JSX.Element {
-  const data = {
-    id: 'FT57863',
-    amount: 1021466,
-    uniqueCode: 469,
-    status: 'SUCCESS',
-    statusDesc: 'Berhasil',
-    senderBank: 'bni',
-    accountNumber: '9631095936',
-    beneficiaryName: 'Sufyan Kramer',
-    beneficiaryBank: 'mandiri',
-    remark: 'sample remark',
-    createdAt: '2023-02-12 13:34:17',
-    completedAt: '2023-02-12 13:34:17',
-    fee: 0,
-  };
+type Props = NativeStackScreenProps<StackParams, 'DetailTransaction'>;
+
+function DetailTransactionPage({route}: Props): JSX.Element {
+  const [data, setData] = useState<Transaction | null>(null);
+
+  useEffect(() => {
+    const {params} = route;
+    if (params) {
+      if (params.data) {
+        setData(params.data);
+      }
+    }
+  }, [route]);
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.section}>
-        <Text style={styles.title}>ID TRANSAKSI: #{data.id}</Text>
+        <Text style={styles.title}>ID TRANSAKSI: #{data?.id}</Text>
         <Image
           source={require('../../../../../assets/icons/copy.png')}
           style={styles.iconPaste}
@@ -39,34 +39,39 @@ function DetailTransactionPage(): JSX.Element {
       </View>
       <View style={styles.detailSection}>
         <Text style={styles.detailTitle}>
-          {data.senderBank.toUpperCase()} ➔ {data.beneficiaryBank.toUpperCase()}
+          {data?.senderBank.toUpperCase()} ➔{' '}
+          {data?.beneficiaryBank.toUpperCase()}
         </Text>
         <View style={styles.detailRow}>
           <View style={{flex: 2}}>
             <Text style={styles.title}>
-              {data.beneficiaryName.toUpperCase()}
+              {data?.beneficiaryName.toUpperCase()}
             </Text>
-            <Text style={styles.desc}>{data.accountNumber}</Text>
+            <Text style={styles.desc}>{data?.accountNumber}</Text>
           </View>
           <View style={{flex: 1}}>
             <Text style={styles.title}>NOMINAL</Text>
-            <Text style={styles.desc}>Rp {formatCurrency(data.amount)}</Text>
+            <Text style={styles.desc}>
+              Rp {data?.amount ? formatCurrency(data?.amount) : '0'}
+            </Text>
           </View>
         </View>
         <View style={styles.detailRow}>
           <View style={{flex: 2}}>
             <Text style={styles.title}>BERITA TRANSFER</Text>
-            <Text style={styles.desc}>{data.remark}</Text>
+            <Text style={styles.desc}>{data?.remark}</Text>
           </View>
           <View style={{flex: 1}}>
             <Text style={styles.title}>KODE UNIK</Text>
-            <Text style={styles.desc}>{data.uniqueCode}</Text>
+            <Text style={styles.desc}>{data?.uniqueCode}</Text>
           </View>
         </View>
         <View style={[styles.detailRow, {marginBottom: 0}]}>
           <View style={{flex: 2}}>
             <Text style={styles.title}>WAKTU DIBUAT</Text>
-            <Text style={styles.desc}>{formatDate(data.createdAt)}</Text>
+            <Text style={styles.desc}>
+              {data?.createdAt ? formatDate(data?.createdAt) : ''}
+            </Text>
           </View>
           <View style={{flex: 1}} />
         </View>

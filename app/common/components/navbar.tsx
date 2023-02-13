@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.bold,
   },
   navbarIcon: {
-    color: Colors.white,
+    tintColor: Colors.white,
     height: 18,
   },
 });

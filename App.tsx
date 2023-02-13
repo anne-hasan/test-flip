@@ -13,23 +13,23 @@ function App(): JSX.Element {
       <NavigationContainer>
         <Stack.Navigator>
           <Stack.Screen
-            name="Transaksi"
+            name="Transaction"
             component={TransactionPage}
             options={{
               header: () =>
                 defaultHeader({
-                  title: 'List Transaction',
+                  title: 'Transaksi',
                   useLeftElement: false,
                 }),
             }}
           />
           <Stack.Screen
-            name="Detail Transaksi"
+            name="DetailTransaction"
             component={DetailTransactionPage}
             options={{
               header: ({navigation}) =>
                 defaultHeader({
-                  title: 'Notifikasi',
+                  title: 'Detail Transaksi',
                   useLeftElement: true,
                   leftPressEvent: () => navigation.goBack(),
                 }),

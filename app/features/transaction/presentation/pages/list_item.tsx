@@ -5,6 +5,27 @@ import {Colors} from '../../../../common/stylesheet/colors';
 import {Fonts} from '../../../../common/stylesheet/fonts';
 import {Transaction} from '../../data/Transaction';
 
+type Props = {
+  data: Transaction;
+  onPress: () => void;
+};
+
+export const Item = ({data, onPress}: Props) => (
+  <TouchableOpacity style={styles.list} onPress={onPress}>
+    <Indicator status={data.status} />
+    <View style={styles.listBody}>
+      <Text style={styles.bankInfo}>
+        {data.senderBank.toUpperCase()} ➔ {data.beneficiaryBank.toUpperCase()}
+      </Text>
+      <Text style={styles.recipient}>{data.beneficiaryName.toUpperCase()}</Text>
+      <Text style={styles.transactionInfo}>
+        Rp {formatCurrency(data.amount)} • {formatDate(data.createdAt)}
+      </Text>
+    </View>
+    <Label code={data.status} />
+  </TouchableOpacity>
+);
+
 export const Indicator = ({status}: {status: string}) => {
   let indicatorStyle = [styles.indicator, {backgroundColor: Colors.grey}];
   switch (status) {
@@ -58,22 +79,6 @@ export const Label = ({code}: {code: string}) => {
     </View>
   );
 };
-
-export const Item = ({data}: {data: Transaction}) => (
-  <TouchableOpacity style={styles.list} onPress={() => {}}>
-    <Indicator status={data.status} />
-    <View style={styles.listBody}>
-      <Text style={styles.bankInfo}>
-        {data.senderBank.toUpperCase()} ➔ {data.beneficiaryBank.toUpperCase()}
-      </Text>
-      <Text style={styles.recipient}>{data.beneficiaryName.toUpperCase()}</Text>
-      <Text style={styles.transactionInfo}>
-        Rp {formatCurrency(data.amount)} • {formatDate(data.createdAt)}
-      </Text>
-    </View>
-    <Label code={data.status} />
-  </TouchableOpacity>
-);
 
 export const ListSeparator = () => {
   return <View style={styles.listSeparator} />;
