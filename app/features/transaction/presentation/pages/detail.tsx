@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import Clipboard from '@react-native-clipboard/clipboard';
 import {Fonts} from '../../../../common/stylesheet/fonts';
 import {Colors} from '../../../../common/stylesheet/colors';
 import {formatCurrency, formatDate} from '../../../../common/helpers/general';
@@ -29,15 +30,21 @@ function DetailTransactionPage({route}: Props): JSX.Element {
     }
   }, [route]);
 
+  function copyToClipboard(text: string) {
+    Clipboard.setString(text);
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.section}>
         <Text style={styles.title}>ID TRANSAKSI: #{data?.id}</Text>
-        <Image
-          source={require('../../../../../assets/icons/copy.png')}
-          style={styles.iconPaste}
-          resizeMode="contain"
-        />
+        <TouchableOpacity onPress={() => copyToClipboard(data?.id!)}>
+          <Image
+            source={require('../../../../../assets/icons/copy.png')}
+            style={styles.iconPaste}
+            resizeMode="contain"
+          />
+        </TouchableOpacity>
       </View>
       <TouchableOpacity
         style={styles.section}

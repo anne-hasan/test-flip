@@ -7,7 +7,7 @@ import {
   StyleSheet,
 } from 'react-native';
 import {Transaction} from '../../data/Transaction';
-import {Item, ListSeparator} from './list_item';
+import {Item, ListSeparator} from '../components/list_item';
 import {Searchbar} from '../../../../common/components/searchbar';
 import {Sort} from '../../../../common/components/sort';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
