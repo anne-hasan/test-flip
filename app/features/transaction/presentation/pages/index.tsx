@@ -19,7 +19,7 @@ const renderItem: ListRenderItem<Transaction> = ({item}) => (
   <Item data={item} />
 );
 
-function TransactionPage(): JSX.Element {
+function TransactionPage({navigation}): JSX.Element {
   const listData = [
     {
       id: 'FT57863',

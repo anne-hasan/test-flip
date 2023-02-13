@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import {Colors} from '../stylesheet/colors';
 import {Fonts} from '../stylesheet/fonts';
-import {Radio} from './Radio';
+import {Radio} from './radio';
 
 interface Props {
   onSort: (field: string, type: string) => void;
@@ -65,7 +65,7 @@ export function Sort({onSort, options}: Props): JSX.Element {
         <View style={styles.sortButton}>
           <Text style={styles.buttonText}>{options[selectedOption].label}</Text>
           <Image
-            source={require('../../../../../assets/icons/chevron-down.png')}
+            source={require('../../../assets/icons/chevron-down.png')}
             style={styles.iconSort}
             resizeMode="contain"
           />

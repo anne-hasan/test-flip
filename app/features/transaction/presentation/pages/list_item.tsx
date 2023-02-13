@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {formatCurrency, formatDate} from '../../../../common/helpers/general';
 import {Colors} from '../../../../common/stylesheet/colors';
 import {Fonts} from '../../../../common/stylesheet/fonts';
@@ -60,7 +60,7 @@ export const Label = ({code}: {code: string}) => {
 };
 
 export const Item = ({data}: {data: Transaction}) => (
-  <View style={styles.list}>
+  <TouchableOpacity style={styles.list} onPress={() => {}}>
     <Indicator status={data.status} />
     <View style={styles.listBody}>
       <Text style={styles.bankInfo}>
@@ -72,7 +72,7 @@ export const Item = ({data}: {data: Transaction}) => (
       </Text>
     </View>
     <Label code={data.status} />
-  </View>
+  </TouchableOpacity>
 );
 
 export const ListSeparator = () => {

@@ -16,7 +16,7 @@ export function Searchbar({
   return (
     <View style={styles.searchbar}>
       <Image
-        source={require('../../../../../assets/icons/search.png')}
+        source={require('../../../assets/icons/search.png')}
         style={styles.icon}
         resizeMode="contain"
       />
