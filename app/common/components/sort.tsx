@@ -10,9 +10,9 @@ import {
   Image,
   ListRenderItem,
 } from 'react-native';
-import {Radio} from './Radio';
 import {Colors} from '../stylesheet/colors';
 import {Fonts} from '../stylesheet/fonts';
+import {Radio} from './Radio';
 
 interface Props {
   onSort: (field: string, type: string) => void;
