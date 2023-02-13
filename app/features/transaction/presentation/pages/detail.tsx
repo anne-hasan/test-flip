@@ -1,5 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {Image, SafeAreaView, StyleSheet, Text, View} from 'react-native';
+import {
+  Image,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {Fonts} from '../../../../common/stylesheet/fonts';
 import {Colors} from '../../../../common/stylesheet/colors';
 import {formatCurrency, formatDate} from '../../../../common/helpers/general';
@@ -11,6 +18,7 @@ type Props = NativeStackScreenProps<StackParams, 'DetailTransaction'>;
 
 function DetailTransactionPage({route}: Props): JSX.Element {
   const [data, setData] = useState<Transaction | null>(null);
+  const [isExpanded, toggleExpand] = useState(true);
 
   useEffect(() => {
     const {params} = route;
@@ -31,57 +39,62 @@ function DetailTransactionPage({route}: Props): JSX.Element {
           resizeMode="contain"
         />
       </View>
-      <View style={styles.section}>
+      <TouchableOpacity
+        style={styles.section}
+        onPress={() => toggleExpand(prevState => !prevState)}>
         <View style={{flex: 1}}>
           <Text style={styles.title}>DETAIL TRANSAKSI</Text>
         </View>
-        <Text style={styles.buttonText}>Tutup</Text>
-      </View>
-      <View style={styles.detailSection}>
-        <Text style={styles.detailTitle}>
-          {data?.senderBank.toUpperCase()} ➔{' '}
-          {data?.beneficiaryBank.toUpperCase()}
-        </Text>
-        <View style={styles.detailRow}>
-          <View style={{flex: 2}}>
-            <Text style={styles.title}>
-              {data?.beneficiaryName.toUpperCase()}
-            </Text>
-            <Text style={styles.desc}>{data?.accountNumber}</Text>
+        <Text style={styles.buttonText}>{isExpanded ? 'Tutup' : 'Lihat'}</Text>
+      </TouchableOpacity>
+      {isExpanded ? (
+        <View style={styles.detailSection}>
+          <Text style={styles.detailTitle}>
+            {data?.senderBank.toUpperCase()} ➔{' '}
+            {data?.beneficiaryBank.toUpperCase()}
+          </Text>
+          <View style={styles.detailRow}>
+            <View style={{flex: 2}}>
+              <Text style={styles.title}>
+                {data?.beneficiaryName.toUpperCase()}
+              </Text>
+              <Text style={styles.desc}>{data?.accountNumber}</Text>
+            </View>
+            <View style={{flex: 1}}>
+              <Text style={styles.title}>NOMINAL</Text>
+              <Text style={styles.desc}>
+                Rp {data?.amount ? formatCurrency(data?.amount) : '0'}
+              </Text>
+            </View>
           </View>
-          <View style={{flex: 1}}>
-            <Text style={styles.title}>NOMINAL</Text>
-            <Text style={styles.desc}>
-              Rp {data?.amount ? formatCurrency(data?.amount) : '0'}
-            </Text>
+          <View style={styles.detailRow}>
+            <View style={{flex: 2}}>
+              <Text style={styles.title}>BERITA TRANSFER</Text>
+              <Text style={styles.desc}>{data?.remark}</Text>
+            </View>
+            <View style={{flex: 1}}>
+              <Text style={styles.title}>KODE UNIK</Text>
+              <Text style={styles.desc}>{data?.uniqueCode}</Text>
+            </View>
+          </View>
+          <View style={[styles.detailRow, {marginBottom: 0}]}>
+            <View style={{flex: 2}}>
+              <Text style={styles.title}>WAKTU DIBUAT</Text>
+              <Text style={styles.desc}>
+                {data?.createdAt ? formatDate(data?.createdAt) : ''}
+              </Text>
+            </View>
+            <View style={{flex: 1}} />
           </View>
         </View>
-        <View style={styles.detailRow}>
-          <View style={{flex: 2}}>
-            <Text style={styles.title}>BERITA TRANSFER</Text>
-            <Text style={styles.desc}>{data?.remark}</Text>
-          </View>
-          <View style={{flex: 1}}>
-            <Text style={styles.title}>KODE UNIK</Text>
-            <Text style={styles.desc}>{data?.uniqueCode}</Text>
-          </View>
-        </View>
-        <View style={[styles.detailRow, {marginBottom: 0}]}>
-          <View style={{flex: 2}}>
-            <Text style={styles.title}>WAKTU DIBUAT</Text>
-            <Text style={styles.desc}>
-              {data?.createdAt ? formatDate(data?.createdAt) : ''}
-            </Text>
-          </View>
-          <View style={{flex: 1}} />
-        </View>
-      </View>
+      ) : null}
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     backgroundColor: '#f7f9f8',
     paddingVertical: 16,
   },
