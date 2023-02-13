@@ -1,15 +1,18 @@
-import React from 'react';
+import React, {PropsWithChildren} from 'react';
 import {Image, StyleSheet, TextInput, View} from 'react-native';
-import {Sort} from './sort';
-import {Colors} from '../../../../common/stylesheet/colors';
-import {Fonts} from '../../../../common/stylesheet/fonts';
+import {Colors} from '../stylesheet/colors';
+import {Fonts} from '../stylesheet/fonts';
 
-interface Props {
+type Props = PropsWithChildren<{
+  placeholder: string;
   onSearch: (keyword: string) => void;
-  onSort: (field: string, type: string) => void;
-}
+}>;
 
-export function Searchbar({onSearch, onSort}: Props): JSX.Element {
+export function Searchbar({
+  placeholder,
+  onSearch,
+  children,
+}: Props): JSX.Element {
   return (
     <View style={styles.searchbar}>
       <Image
@@ -21,11 +24,11 @@ export function Searchbar({onSearch, onSort}: Props): JSX.Element {
         returnKeyLabel="search"
         onChangeText={q => onSearch(q)}
         style={styles.content}
-        placeholder="Cari nama, bank, atau nominal"
+        placeholder={placeholder}
         placeholderTextColor={Colors.grey}
         autoFocus={false}
       />
-      <Sort onSort={onSort} />
+      {children}
     </View>
   );
 }

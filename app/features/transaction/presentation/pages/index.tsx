@@ -8,9 +8,12 @@ import {
 } from 'react-native';
 import {Transaction} from '../../data/Transaction';
 import {Item, ListSeparator} from './list_item';
-import {Searchbar} from './searchbar';
+import {Searchbar} from '../../../../common/components/searchbar';
+import {Sort} from '../../../../common/components/sort';
 
 function getListData() {}
+function sortListData(field: string, type: string) {}
+function filterListData(keyword: string) {}
 
 const renderItem: ListRenderItem<Transaction> = ({item}) => (
   <Item data={item} />
@@ -49,9 +52,48 @@ function TransactionPage(): JSX.Element {
       fee: 0,
     },
   ];
+
+  const sortOptions = [
+    {
+      field: 'id',
+      label: 'URUTKAN',
+      type: 'DESC',
+    },
+    {
+      field: 'name',
+      label: 'Nama A-Z',
+      type: 'ASC',
+    },
+    {
+      field: 'name',
+      label: 'Nama Z-A',
+      type: 'DESC',
+    },
+    {
+      field: 'createdAt',
+      label: 'Tanggal Terbaru',
+      type: 'DESC',
+    },
+    {
+      field: 'createdAt',
+      label: 'Tanggal Terlama',
+      type: 'ASC',
+    },
+  ];
   return (
     <SafeAreaView style={styles.container}>
-      <Searchbar onSearch={q => console.log(q)} onSort={() => {}} />
+      <Searchbar
+        placeholder="Cari nama, bank, atau nominal"
+        onSearch={q => {
+          filterListData(q);
+        }}>
+        <Sort
+          options={sortOptions}
+          onSort={(field: string, type: string) => {
+            sortListData(field, type);
+          }}
+        />
+      </Searchbar>
       <FlatList
         data={listData}
         keyExtractor={(item, index) => String(index)}

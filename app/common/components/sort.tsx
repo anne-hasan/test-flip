@@ -10,67 +10,40 @@ import {
   Image,
   ListRenderItem,
 } from 'react-native';
-import {Colors} from '../../../../common/stylesheet/colors';
-import {Fonts} from '../../../../common/stylesheet/fonts';
+import {Radio} from './Radio';
+import {Colors} from '../stylesheet/colors';
+import {Fonts} from '../stylesheet/fonts';
 
 interface Props {
   onSort: (field: string, type: string) => void;
+  options: any;
 }
 
-export function Sort({onSort}: Props): JSX.Element {
+export function Sort({onSort, options}: Props): JSX.Element {
   const [isShow, showPan] = useState(false);
-  const [sortField, setSortField] = useState('id');
-  const [sortType, setSortType] = useState('ASC');
+  const [selectedOption, selectOption] = useState(0);
 
-  const setSort = (field: string, type: string) => {
+  const setSort = (optionIndex: number) => {
     showPan(false);
-    setSortField(field);
-    setSortType(type);
-    onSort(field, type);
+    let sortBy = options[optionIndex];
+    selectOption(optionIndex);
+    onSort(sortBy.field, sortBy.type);
   };
 
-  const renderItem: ListRenderItem<any> = ({item}) => (
-    <TouchableOpacity onPress={() => setSort(item.field, item.type)}>
-      {item.field == sortField && item.type == sortType ? (
-        <Text style={styles.optionSelected}>{item.label}</Text>
-      ) : (
-        <Text style={styles.option}>{item.label}</Text>
-      )}
+  const renderItem: ListRenderItem<any> = ({item, index}) => (
+    <TouchableOpacity onPress={() => setSort(index)}>
+      <Radio
+        label={item.label}
+        checked={index == selectedOption}
+        onChecked={() => {}}
+      />
     </TouchableOpacity>
   );
-
-  const options = [
-    {
-      field: 'id',
-      label: 'URUTKAN',
-      type: 'DESC',
-    },
-    {
-      field: 'name',
-      label: 'Nama A-Z',
-      type: 'ASC',
-    },
-    {
-      field: 'name',
-      label: 'Nama Z-A',
-      type: 'DESC',
-    },
-    {
-      field: 'createdAt',
-      label: 'Tanggal Terbaru',
-      type: 'DESC',
-    },
-    {
-      field: 'createdAt',
-      label: 'Tanggal Terlama',
-      type: 'ASC',
-    },
-  ];
 
   return (
     <>
       <Modal
-        animationType="slide"
+        animationType="fade"
         transparent={true}
         visible={isShow}
         onRequestClose={() => showPan(false)}>
@@ -84,19 +57,13 @@ export function Sort({onSort}: Props): JSX.Element {
                 keyExtractor={(item, index) => String(index)}
                 renderItem={renderItem}
               />
-              {/* <Button
-                theme="cancel"
-                text="BATAL"
-                onPress={() => showPan(false)}
-                style={{marginTop: 12}}
-              /> */}
             </View>
           </TouchableWithoutFeedback>
         </TouchableOpacity>
       </Modal>
       <TouchableWithoutFeedback onPress={() => showPan(true)}>
         <View style={styles.sortButton}>
-          <Text style={styles.buttonText}>URUTKAN</Text>
+          <Text style={styles.buttonText}>{options[selectedOption].label}</Text>
           <Image
             source={require('../../../../../assets/icons/chevron-down.png')}
             style={styles.iconSort}
@@ -123,7 +90,6 @@ const styles = StyleSheet.create({
     color: Colors.primary,
   },
   button: {
-    // flex: 1,
     justifyContent: 'center',
     backgroundColor: '#fff',
     maxWidth: 135,
@@ -148,27 +114,14 @@ const styles = StyleSheet.create({
   modalOverlay: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'flex-end',
+    justifyContent: 'center',
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   pan: {
     paddingHorizontal: 16,
     paddingVertical: 24,
     backgroundColor: '#F6F6F6',
-    width: '100%',
-  },
-  option: {
-    textAlign: 'center',
-    fontFamily: Fonts.regular,
-    fontSize: 12,
-    color: Colors.black,
-    marginBottom: 24,
-  },
-  optionSelected: {
-    textAlign: 'center',
-    fontFamily: Fonts.bold,
-    fontSize: 12,
-    color: Colors.black,
-    marginBottom: 24,
+    width: '80%',
+    borderRadius: 5,
   },
 });
