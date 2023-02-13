@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Text, TouchableWithoutFeedback, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import {Colors} from '../stylesheet/colors';
 import {Fonts} from '../stylesheet/fonts';
 
@@ -17,7 +17,7 @@ export function Radio({label, checked, onChecked}: Props): JSX.Element {
   };
 
   return (
-    <TouchableWithoutFeedback onPress={check}>
+    <TouchableOpacity onPress={check}>
       <View style={styles.container}>
         {checked ? (
           <View style={styles.default}>
@@ -30,7 +30,7 @@ export function Radio({label, checked, onChecked}: Props): JSX.Element {
           <Text style={styles.label}>{label}</Text>
         </View>
       </View>
-    </TouchableWithoutFeedback>
+    </TouchableOpacity>
   );
 }
 

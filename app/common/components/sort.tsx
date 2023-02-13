@@ -31,13 +31,11 @@ export function Sort({onSort, options}: Props): JSX.Element {
   };
 
   const renderItem: ListRenderItem<any> = ({item, index}) => (
-    <TouchableOpacity onPress={() => setSort(index)}>
-      <Radio
-        label={item.label}
-        checked={index == selectedOption}
-        onChecked={() => {}}
-      />
-    </TouchableOpacity>
+    <Radio
+      label={item.label}
+      checked={index == selectedOption}
+      onChecked={() => setSort(index)}
+    />
   );
 
   return (

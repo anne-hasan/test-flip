@@ -15,16 +15,18 @@ import {StackParams} from '../../../../common/helpers/navigation';
 import {Loader} from '../../../../common/components/loader';
 
 type Props = NativeStackScreenProps<StackParams, 'Transaction'>;
-function TransactionPage({route, navigation}: Props): JSX.Element {
+function TransactionPage({navigation}: Props): JSX.Element {
   const [isLoading, setLoading] = useState(false);
-  const [listData, setListData] = useState<Transaction[] | null>(null);
+  const [listData, setListData] = useState<Transaction[] | null | undefined>(
+    null,
+  );
   const [originListData, setOriginListData] = useState<Transaction[] | null>(
     null,
   );
 
   useEffect(() => {
     getListData();
-  }, []);
+  }, [setListData]);
 
   function getListData() {
     setLoading(true);
@@ -59,7 +61,41 @@ function TransactionPage({route, navigation}: Props): JSX.Element {
         console.log(err);
       });
   }
-  function sortListData(field: string, type: string) {}
+  function sortListData(field?: string, type?: string) {
+    setLoading(true);
+    if (field == null && type == null) {
+      setListData(originListData);
+    } else {
+      setListData(prevState => {
+        return prevState?.sort((a, b) => {
+          if (field == 'beneficiaryName') {
+            if (
+              a.beneficiaryName.toLowerCase() > b.beneficiaryName.toLowerCase()
+            ) {
+              return type == 'ASC' ? 1 : -1;
+            }
+            if (
+              a.beneficiaryName.toLowerCase() < b.beneficiaryName.toLowerCase()
+            ) {
+              return type == 'ASC' ? -1 : 1;
+            }
+          } else if (field == 'createdAt') {
+            if (a.createdAt > b.createdAt) {
+              return type == 'ASC' ? 1 : -1;
+            }
+            if (a.createdAt < b.createdAt) {
+              return type == 'ASC' ? -1 : 1;
+            }
+          }
+          return 0;
+        });
+      });
+    }
+
+    setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+  }
   function filterListData(keyword: string) {
     let q = keyword.toLowerCase();
     if (q == '') {
@@ -82,17 +118,17 @@ function TransactionPage({route, navigation}: Props): JSX.Element {
 
   const sortOptions = [
     {
-      field: 'id',
+      field: null,
       label: 'URUTKAN',
-      type: 'DESC',
+      type: null,
     },
     {
-      field: 'name',
+      field: 'beneficiaryName',
       label: 'Nama A-Z',
       type: 'ASC',
     },
     {
-      field: 'name',
+      field: 'beneficiaryName',
       label: 'Nama Z-A',
       type: 'DESC',
     },
@@ -138,6 +174,7 @@ function TransactionPage({route, navigation}: Props): JSX.Element {
       ) : (
         <FlatList
           data={listData}
+          extraData={listData}
           keyExtractor={(item, index) => String(index)}
           renderItem={renderItem}
           refreshControl={
